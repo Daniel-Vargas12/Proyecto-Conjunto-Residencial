@@ -1,7 +1,7 @@
 <?php 
 session_start();
 require ("logica/Administrador.php");
-
+require("logica/Propietario.php");
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +28,8 @@ $paginas_sin_autenticacion = array(
     "presentacion/noAutorizado.php",
 );
 $paginas_con_autenticacion = array(
-    "presentacion/sesionAdmin.php"
+    "presentacion/sesionAdmin.php",
+    "presentacion/sesionPropietario.php"
 );
 if(!isset($_GET["pid"])){
     include ("presentacion/inicio.php");

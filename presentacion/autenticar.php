@@ -13,6 +13,15 @@ if(isset($_POST["autenticar"])){
         $_SESSION["id"] = $admin -> getId();
         $_SESSION["rol"] = "admin";
         header("Location: ?pid=" . base64_encode("presentacion/sesionAdmin.php"));
+    }else{
+        $prop = new Propietario("", "", "", $correo, $clave, "");
+        if($prop -> autenticar()){
+            $_SESSION["id"] = $prop -> getId();
+        $_SESSION["rol"] = "propietario";
+        header("Location: ?pid=" . base64_encode("presentacion/sesionPropietario.php"));
+        }else{
+            $error=true;
+        }
     }
 }
 ?>

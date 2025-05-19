@@ -1,5 +1,5 @@
 <?php
-    if($_SESSION["rol"] != "admin"){
+    if($_SESSION["rol"] != "propietario"){
         header("Location: ?pid=" . base64_encode("presentacion/noAutorizado.php"));
     }
 ?>
@@ -8,7 +8,7 @@
     
 <?php 
 include ("presentacion/encabezado.php");
-include ("presentacion/menuAdmin.php");
+include ("presentacion/menuPropietario.php");
 ?>
 
 </body>
