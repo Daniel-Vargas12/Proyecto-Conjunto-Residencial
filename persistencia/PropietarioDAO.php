@@ -7,7 +7,7 @@ class PropietarioDAO{
     private $clave;
     private $telefono;
 
-    public function __construct($id = 0, $nombre = "", $apellido = "", $email = "", $clave = "", $telefono ="") {
+    public function __construct($id = "", $nombre = "", $apellido = "", $email = "", $clave = "", $telefono ="") {
         $this -> id = $id;
         $this -> nombre = $nombre;
         $this -> apellido = $apellido;
@@ -20,6 +20,12 @@ class PropietarioDAO{
         return "select id
                 from propietario 
                 where email = '" . $this -> email . "' and clave = '" . md5($this -> clave) . "'";
+    }
+
+    public function consultar(){
+        return "select nombre, apellido, email, telefono
+                from propietario
+                where id = '" . $this -> id . "'";
     }
 
 }

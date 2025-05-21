@@ -22,5 +22,18 @@ class Propietario extends Usuario {
             return false;
         }
     }
+
+    public function consultar(){
+        $conexion = new Conexion();
+        $propDAO = new PropietarioDAO($this -> id);
+        $conexion -> abrir();
+        $conexion -> ejecutar($propDAO -> consultar());
+        $datos = $conexion -> registro();
+        $this -> nombre = $datos[0];
+        $this -> apellido = $datos[1];
+        $this -> email = $datos[2];
+        $this -> telefono = $datos[3];
+        $conexion->cerrar();
+    }
 }
 ?>

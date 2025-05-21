@@ -1,7 +1,8 @@
 <?php 
 session_start();
-require ("logica/Administrador.php");
+require("logica/Administrador.php");
 require("logica/Propietario.php");
+require("logica/CuentaCobro.php");
 ?>
 
 <!DOCTYPE html>
@@ -23,16 +24,17 @@ require("logica/Propietario.php");
 </head>
 <?php
 $paginas_sin_autenticacion = array(
-    "presentacion/inicio.php",
     "presentacion/autenticar.php",
     "presentacion/noAutorizado.php",
 );
 $paginas_con_autenticacion = array(
     "presentacion/sesionAdmin.php",
-    "presentacion/sesionPropietario.php"
+    "presentacion/sesionPropietario.php",
+    "presentacion/Cuentas/consultarCuentas.php",
+    "presentacion/Cuentas/crearCuentaCobro.php"
 );
 if(!isset($_GET["pid"])){
-    include ("presentacion/inicio.php");
+    include ("presentacion/autenticar.php");
 }else{
 $pid = base64_decode($_GET["pid"]);
     if(in_array($pid, $paginas_sin_autenticacion)){
@@ -46,9 +48,7 @@ $pid = base64_decode($_GET["pid"]);
     }else{
         echo "error 404";
     }
-
 }
-
 
 ?>
 </html>

@@ -22,5 +22,19 @@ class Administrador extends Usuario {
             return false;
         }
     }
+
+        public function consultar(){
+        $conexion = new Conexion();
+        $adminDAO = new AdminDAO($this -> id);
+        $conexion -> abrir();
+        $conexion -> ejecutar($adminDAO -> consultar());
+        $datos = $conexion -> registro();
+        $this -> nombre = $datos[0];
+        $this -> apellido = $datos[1];
+        $this -> email = $datos[2];
+        $this -> telefono = $datos[3];
+        $conexion->cerrar();
+    }
+
 }
 ?>
