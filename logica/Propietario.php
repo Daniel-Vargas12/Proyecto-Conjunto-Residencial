@@ -4,6 +4,7 @@ require_once("logica/Usuario.php");
 require_once("persistencia/PropietarioDAO.php");
 
 class Propietario extends Usuario {
+    private $apartamentos = array();
     public function __construct($id = "", $nombre = "", $apellido = "", $correo = "", $clave = "", $telefono = "") {
         parent::__construct($id, $nombre, $apellido, $correo, $clave, $telefono);
     }
@@ -35,5 +36,50 @@ class Propietario extends Usuario {
         $this -> telefono = $datos[3];
         $conexion->cerrar();
     }
+
+    public static function consultarTodos() {
+        $conexion = new Conexion();
+        $apartamentoDAO = new ApartamentoDAO();
+        $conexion->abrir();
+        $conexion->ejecutar($apartamentoDAO->consultar());
+
+        $propietarios = [];
+
+        while ($registro = $conexion->registro1()) {
+            $idPropietario = $registro["id"];
+            
+            // Verifica si ya existe un propietario en la lista
+            if (!isset($propietarios[$idPropietario])) {
+                $propietario = new Propietario(
+                    $idPropietario,
+                    $registro["nombre"],
+                    $registro["apellido"],
+                    $registro["email"],
+                    "",
+                    $registro["telefono"]
+                );
+                $propietarios[$idPropietario] = $propietario;
+            }
+
+            // Crea el apartamento y lo agrega al propietario
+            $apartamento = [
+                "numero" => $registro["numero"],
+                "torre" => $registro["torre"],
+                "metrosCuadrados" => $registro["metrosCuadrados"]
+            ];
+            $propietarios[$idPropietario]->apartamentos[] = $apartamento;
+        }
+
+        $conexion->cerrar();
+        return array_values($propietarios); // Para devolver un array indexado
+    }
+
+    public function getApartamentos() {
+            return $this->apartamentos;
+        }
+
+        public function setApartamentos($apartamentos) {
+            $this->apartamentos = $apartamentos;
+        }
 }
 ?>

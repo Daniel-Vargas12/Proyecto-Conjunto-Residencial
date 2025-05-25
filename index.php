@@ -31,7 +31,8 @@ $paginas_con_autenticacion = array(
     "presentacion/sesionAdmin.php",
     "presentacion/sesionPropietario.php",
     "presentacion/Cuentas/consultarCuentas.php",
-    "presentacion/Cuentas/crearCuentaCobro.php"
+    "presentacion/Cuentas/crearCuentaCobro.php",
+    "presentacion/Pagos/pagarCuenta.php"
 );
 if(!isset($_GET["pid"])){
     include ("presentacion/autenticar.php");

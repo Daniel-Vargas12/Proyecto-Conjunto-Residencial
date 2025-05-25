@@ -28,6 +28,12 @@ class PropietarioDAO{
                 where id = '" . $this -> id . "'";
     }
 
+    public function consultarTodos() {
+    return "SELECT p.nombre, p.apellido, p.email, p.telefono, a.torre, a.numero AS apartamento
+            FROM propietario p
+            INNER JOIN apartamento a ON p.id = a.idPropietario";
+    }
+
 }
 
 ?>

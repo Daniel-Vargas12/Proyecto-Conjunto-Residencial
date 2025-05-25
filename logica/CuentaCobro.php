@@ -2,22 +2,24 @@
 
 require_once("persistencia/Conexion.php");
 require_once ("persistencia/CuentaCobroDAO.php");
-
+require_once ("logica/Apartamento.php");
 
 class CuentaCobro{
     private $id;
     private $mes;
     private $anio;
     private $estado;
+    private $monto;
     private $idApartamento;
     private $idAdmin;
 
-public function __construct($id="",$mes="", $anio="", $estado="", $idApartamento="", $idAdmin="")
+public function __construct($id="",$mes="", $anio="", $estado="", $monto="", $idApartamento="", $idAdmin="")
 {
     $this -> id = $id;
     $this -> mes = $mes;
     $this -> anio = $anio;
     $this -> estado = $estado;
+    $this -> monto = $monto;
     $this -> idApartamento = $idApartamento;
     $this -> idAdmin = $idAdmin;
 }
@@ -42,6 +44,11 @@ public function getEstado()
     return $this -> estado;
 }
 
+public function getMonto()
+{
+    return $this -> monto;
+}
+
 public function getIdApartamento()
 {
     return $this -> idApartamento;
@@ -56,37 +63,58 @@ public function consultar($rol="", $id=""){
         $conexion = new Conexion();
         $ccDAO = new CuentaCobroDAO(
             "", 
-    $this->mes, 
-    $this->anio, 
-    $this->estado, 
-    $this->idApartamento, 
-    $this->idAdmin
+        $this->mes, 
+        $this->anio, 
+        $this->estado,
+        $this->monto,
+        $this->idApartamento, 
+        $this->idAdmin
         );
         $conexion -> abrir();
         $conexion -> ejecutar($ccDAO -> consultar($rol,$id));
         $cuentasC = array();
         while(($datos = $conexion -> registro()) != null){
-            $cuenta = new CuentaCobro($datos[0], $datos[1], $datos[2], $datos[3], $datos[4], $datos[5]);
+            $cuenta = new CuentaCobro($datos[0], $datos[1], $datos[2], $datos[3], $datos[4], $datos[5], $datos[6]);
             array_push($cuentasC, $cuenta);
         }
         $conexion -> cerrar();
         return $cuentasC;
     }
 
-public function crear(){
-    $conexion = new Conexion();
-   $ccDAO = new CuentaCobroDAO(
-    "", // ID vacío porque es autoincremental
-    $this->mes,
-    $this->anio,
-    $this->estado,
-    $this->idApartamento,
-    $this->idAdmin
-);
-    $conexion->abrir();
-    $conexion->ejecutar($ccDAO->crear($this->mes, $this->anio, $this->estado, $this->idApartamento, $this->idAdmin));
-    $conexion->cerrar();
-}
+    public function crear(){
+        $conexion = new Conexion();
+        $ccDAO = new CuentaCobroDAO(
+            "", // ID vacío, es autoincremental
+            $this->mes,
+            $this->anio,
+            $this->estado,
+            $this->monto,
+            $this->idApartamento,
+            $this->idAdmin
+        );
+        $conexion->abrir();
+        $conexion->ejecutar($ccDAO->crear());
+        $conexion->cerrar();
+    }
+
+    public function existeCuenta() {
+        $conexion = new Conexion();
+        $ccDAO = new CuentaCobroDAO(
+            "", 
+            $this->mes,
+            $this->anio,
+            "", 
+            "", 
+            $this->idApartamento, 
+            ""
+        );
+        $conexion->abrir();
+        $conexion->ejecutar($ccDAO->existeCuenta());
+        $resultado = $conexion->registro();
+        $conexion->cerrar();
+        return $resultado[0] > 0; // true si existe al menos una
+    }
+
 }
 
 ?>
