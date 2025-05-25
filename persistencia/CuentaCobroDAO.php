@@ -18,17 +18,25 @@ class CuentaCobroDAO{
         $this -> Apartamento = $Apartamento;
         $this -> Administrador = $Administrador;
     }
-    
-    public function consultar($rol, $id) {
-        if($rol == "admin"){
-            $sentencia= "SELECT * FROM cuentacobro";
-            return $sentencia;
-        } else if($rol == "propietario") {
-            $sentencia= "SELECT * FROM cuentacobro 
-                    WHERE idApartamento IN (
-                        SELECT id FROM apartamento WHERE idPropietario = '$id')";
-            return $sentencia;
+
+    public function consultar($rol = "", $id = "") {
+        $sentencia = "
+            SELECT 
+                cc.id AS idCuentaCobro, cc.mes, cc.año, cc.estado, cc.monto,
+                a.numero AS numeroApartamento, a.torre,
+                p.nombre AS nombrePropietario, p.apellido AS apellidoPropietario,
+                adm.id AS idAdmin, adm.nombre AS nombreAdmin, adm.apellido AS apellidoAdmin
+            FROM cuentaCobro cc
+            JOIN Apartamento a ON cc.idApartamento = a.id
+            JOIN Propietario p ON a.idPropietario = p.id
+            LEFT JOIN Administrador adm ON cc.idAdmin = adm.id
+        ";
+
+        if ($rol != "admin") {
+            $sentencia .= " WHERE p.id = '$id'";
         }
+
+        return $sentencia;
     }
 
     public function crear() {

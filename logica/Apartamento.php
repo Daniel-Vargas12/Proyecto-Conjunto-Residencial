@@ -11,13 +11,15 @@ class Apartamento {
     private $idPropietario;
     private $propietario;
 
-    public function __construct($id = "", $numero = "", $torre = "", $metrosCuadrados = "", $idPropietario = "") {
+    public function __construct($id = "", $numero = "", $torre = "", $metrosCuadrados = "", $idPropietario = "", $propietario = null) {
         $this->id = $id;
         $this->numero = $numero;
         $this->torre = $torre;
         $this->metrosCuadrados = $metrosCuadrados;
         $this->idPropietario = $idPropietario;
+        $this->propietario = $propietario;
     }
+
 
     public function getId()
     {

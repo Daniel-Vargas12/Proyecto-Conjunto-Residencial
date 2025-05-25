@@ -10,18 +10,18 @@ class CuentaCobro{
     private $anio;
     private $estado;
     private $monto;
-    private $idApartamento;
-    private $idAdmin;
+    private $apartamento;
+    private $admin;
 
-public function __construct($id="",$mes="", $anio="", $estado="", $monto="", $idApartamento="", $idAdmin="")
+public function __construct($id="",$mes="", $anio="", $estado="", $monto="", $apartamento=null, $admin=null)
 {
     $this -> id = $id;
     $this -> mes = $mes;
     $this -> anio = $anio;
     $this -> estado = $estado;
     $this -> monto = $monto;
-    $this -> idApartamento = $idApartamento;
-    $this -> idAdmin = $idAdmin;
+    $this -> apartamento = $apartamento;
+    $this -> admin = $admin;
 }
 
 public function getId()
@@ -49,37 +49,65 @@ public function getMonto()
     return $this -> monto;
 }
 
-public function getIdApartamento()
+public function getApartamento()
 {
-    return $this -> idApartamento;
+    return $this -> apartamento;
 }
 
-public function getIdAdmin()
+public function getAdmin()
 {
-    return $this -> idAdmin;
+    return $this -> admin;
 }
 
-public function consultar($rol="", $id=""){
-        $conexion = new Conexion();
-        $ccDAO = new CuentaCobroDAO(
-            "", 
+public function consultar($rol = "", $id = "") {
+    $conexion = new Conexion();
+    $ccDAO = new CuentaCobroDAO(
+        "", 
         $this->mes, 
         $this->anio, 
         $this->estado,
         $this->monto,
-        $this->idApartamento, 
-        $this->idAdmin
-        );
-        $conexion -> abrir();
-        $conexion -> ejecutar($ccDAO -> consultar($rol,$id));
-        $cuentasC = array();
-        while(($datos = $conexion -> registro()) != null){
-            $cuenta = new CuentaCobro($datos[0], $datos[1], $datos[2], $datos[3], $datos[4], $datos[5], $datos[6]);
-            array_push($cuentasC, $cuenta);
+        $this->apartamento, 
+        $this->admin
+    );
+    $conexion->abrir();
+    $conexion->ejecutar($ccDAO->consultar($rol, $id));
+
+    $cuentasC = array();
+
+    while (($datos = $conexion->registro()) != null) {
+        
+
+        // Crear el propietario
+        if ($rol == "admin") {
+            if ($rol == "admin") {
+                $propietario = new Propietario("", $datos[7], $datos[8]); // ID vacío
+                $apartamento = new Apartamento("", $datos[5], $datos[6], "", "", $propietario);
+                $admin = null;
+            }
+        } else {
+            $apartamento = new Apartamento("", $datos[5], $datos[6]);
+           if (!empty($datos[9])) { // Verificamos solo que idAdmin exista
+    $admin = new Administrador($datos[9], $datos[10], $datos[11]);
+} else {
+    $admin = null;
+}
+
+
+
+
+
         }
-        $conexion -> cerrar();
-        return $cuentasC;
+
+        // Crear la cuenta de cobro con objetos
+        $cuenta = new CuentaCobro($datos[0], $datos[1], $datos[2], $datos[3], $datos[4], $apartamento, $admin);
+
+        $cuentasC[] = $cuenta;
     }
+
+    $conexion->cerrar();
+    return $cuentasC;
+}
 
     public function crear(){
         $conexion = new Conexion();
@@ -89,8 +117,8 @@ public function consultar($rol="", $id=""){
             $this->anio,
             $this->estado,
             $this->monto,
-            $this->idApartamento,
-            $this->idAdmin
+            $this->apartamento,
+            $this->admin
         );
         $conexion->abrir();
         $conexion->ejecutar($ccDAO->crear());
@@ -105,7 +133,7 @@ public function consultar($rol="", $id=""){
             $this->anio,
             "", 
             "", 
-            $this->idApartamento, 
+            $this->apartamento, 
             ""
         );
         $conexion->abrir();
