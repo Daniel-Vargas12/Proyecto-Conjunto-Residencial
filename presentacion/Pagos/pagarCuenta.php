@@ -1,52 +1,57 @@
 <?php
-$idCuenta = $_GET['idCuenta']; // Se espera que venga por GET
+$idCuenta = $_GET['idCuenta']; 
 ?>
 
-<body>
-<div class="container mt-4">
-    <div class="card">
-        <div class="card-header"><h5>Registrar Pago</h5></div>
-        <div class="card-body">
+<body class="bg-light">
+  <div class="container">
+    <div class="row justify-content-center align-items-center" style="min-height: 100vh;">
+      <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg">
+          <div class="card-header bg-primary text-white fw-bold">Registrar Pago</div>
+          <div class="card-body">
             <form method="post" action="">
-                <input type="hidden" name="idCuentaCobro" value="<?php echo $idCuenta; ?>">
+              <input type="hidden" name="idCuentaCobro" value="<?php echo $idCuenta; ?>">
 
-                <div class="mb-3">
-                    <label for="fechaPago" class="form-label">Fecha de Pago</label>
-                    <input type="date" class="form-control" name="fechaPago" required>
-                </div>
+              <div class="mb-3">
+                <label for="fechaPago" class="form-label">Fecha de Pago</label>
+                <input type="date" class="form-control" name="fechaPago" required value="<?php echo date('Y-m-d'); ?>">
 
-                <div class="mb-3">
-                    <label for="montoPagado" class="form-label">Monto Pagado</label>
-                    <input type="number" step="0.01" class="form-control" name="montoPagado" required>
-                </div>
+              </div>
 
-                <div class="mb-3">
-                    <label for="medioPago" class="form-label">Medio de Pago</label>
-                    <select class="form-select" name="medioPago" required>
-                        <option value="">Seleccione...</option>
-                        <option value="Efectivo">Efectivo</option>
-                        <option value="Transferencia">Transferencia</option>
-                        <option value="Nequi">Nequi</option>
-                        <option value="Daviplata">Daviplata</option>
-                        <option value="Tarjeta">Tarjeta</option>
-                    </select>
-                </div>
+              <div class="mb-3">
+                <label for="montoPagado" class="form-label">Monto Pagado</label>
+                <input type="number" step="0.01" class="form-control" name="montoPagado" required>
+              </div>
 
-                <button type="submit" class="btn btn-primary">Registrar Pago</button>
+              <div class="mb-3">
+                <label for="medioPago" class="form-label">Medio de Pago</label>
+                <select class="form-select" name="medioPago" required>
+                  <option value="">Seleccione...</option>
+                  <option value="Efectivo">Efectivo</option>
+                  <option value="Transferencia">Transferencia</option>
+                  <option value="Nequi">Nequi</option>
+                  <option value="Daviplata">Daviplata</option>
+                  <option value="Tarjeta">Tarjeta</option>
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100">Registrar Pago</button>
             </form>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+  </div>
 
 <?php
-// Procesar el formulario-seria mejor usar isset¿?
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     include_once(__DIR__ . "/../../logica/Pago.php");
     include_once(__DIR__ . "/../../persistencia/PagoDAO.php");
     include_once(__DIR__ . "/../../persistencia/Conexion.php");
 
     $pago = new Pago(
-        "",                              // ID auto incremental
+        "", // ID auto incremental
         $_POST['fechaPago'],
         $_POST['montoPagado'],
         $_POST['medioPago'],

@@ -6,6 +6,7 @@ class PropietarioDAO{
     private $email;
     private $clave;
     private $telefono;
+    private $estadoGeneral;
 
     public function __construct($id = "", $nombre = "", $apellido = "", $email = "", $clave = "", $telefono ="") {
         $this -> id = $id;
@@ -15,7 +16,7 @@ class PropietarioDAO{
         $this -> clave = $clave;
         $this -> telefono = $telefono;
     }
-    
+
     public function autenticar(){
         return "select id
                 from propietario 
@@ -27,13 +28,6 @@ class PropietarioDAO{
                 from propietario
                 where id = '" . $this -> id . "'";
     }
-
-    public function consultarTodos() {
-    return "SELECT p.nombre, p.apellido, p.email, p.telefono, a.torre, a.numero AS apartamento
-            FROM propietario p
-            INNER JOIN apartamento a ON p.id = a.idPropietario";
-    }
-
 }
 
 ?>

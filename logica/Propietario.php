@@ -5,8 +5,10 @@ require_once("persistencia/PropietarioDAO.php");
 
 class Propietario extends Usuario {
     private $apartamentos = array();
-    public function __construct($id = "", $nombre = "", $apellido = "", $correo = "", $clave = "", $telefono = "") {
+    private $estadoGeneral;
+    public function __construct($id = "", $nombre = "", $apellido = "", $correo = "", $clave = "", $telefono = "", $estadoGeneral = "") {
         parent::__construct($id, $nombre, $apellido, $correo, $clave, $telefono);
+        $this->estadoGeneral = $estadoGeneral;
     }
 
     public function autenticar(){
@@ -42,12 +44,10 @@ class Propietario extends Usuario {
         $apartamentoDAO = new ApartamentoDAO();
         $conexion->abrir();
         $conexion->ejecutar($apartamentoDAO->consultar());
-
         $propietarios = [];
 
         while ($registro = $conexion->registro1()) {
             $idPropietario = $registro["id"];
-            
             // Verifica si ya existe un propietario en la lista
             if (!isset($propietarios[$idPropietario])) {
                 $propietario = new Propietario(
@@ -56,7 +56,8 @@ class Propietario extends Usuario {
                     $registro["apellido"],
                     $registro["email"],
                     "",
-                    $registro["telefono"]
+                    $registro["telefono"],
+                    $registro["estadoGeneral"]//estado actual de pagos
                 );
                 $propietarios[$idPropietario] = $propietario;
             }
@@ -69,17 +70,21 @@ class Propietario extends Usuario {
             ];
             $propietarios[$idPropietario]->apartamentos[] = $apartamento;
         }
-
         $conexion->cerrar();
         return array_values($propietarios); // Para devolver un array indexado
     }
 
     public function getApartamentos() {
             return $this->apartamentos;
-        }
-
-        public function setApartamentos($apartamentos) {
-            $this->apartamentos = $apartamentos;
-        }
+    }
+    public function setApartamentos($apartamentos) {
+        $this->apartamentos = $apartamentos;
+    }
+    public function getEstadoGeneral() {
+        return $this->estadoGeneral;
+    }
+    public function setEstadoGeneral($estadoGeneral){
+        $this -> estadoGeneral = $estadoGeneral;
+    }
 }
 ?>

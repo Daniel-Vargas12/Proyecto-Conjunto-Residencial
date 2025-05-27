@@ -19,14 +19,13 @@ class Conexion{
     public function registro(){
         return $this -> resultado -> fetch_row();
     }
-    public function registro1(){//metodo alternativo para acceder ["id"] y no [0]
-    return $this->resultado->fetch_assoc();
-}
+    public function registro1(){
+        return $this->resultado->fetch_assoc();
+    }
     
     public function filas(){
         return $this -> resultado -> num_rows;
     }
-    
 }
 
 ?>

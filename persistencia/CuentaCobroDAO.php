@@ -35,20 +35,18 @@ class CuentaCobroDAO{
         if ($rol != "admin") {
             $sentencia .= " WHERE p.id = '$id'";
         }
-
         return $sentencia;
     }
 
     public function crear() {
         if (empty($this->mes) || empty($this->anio) || empty($this->estado) || 
             empty($this->Apartamento) || empty($this->Administrador)) {
-            return false; // o lanza una excepción, o devuelve un mensaje de error
+            return false; 
         
         }
-
         $sentencia = "INSERT INTO cuentacobro (mes, año, estado, monto, idApartamento, idAdmin) 
                     VALUES ('$this->mes', '$this->anio', '$this->estado', '$this->monto', '$this->Apartamento', '$this->Administrador')";
-        echo $sentencia;//para verificar consulta-borrar despues
+        
         return $sentencia;
     }
 

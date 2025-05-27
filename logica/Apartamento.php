@@ -20,7 +20,6 @@ class Apartamento {
         $this->propietario = $propietario;
     }
 
-
     public function getId()
     {
         return $this -> id;
@@ -49,7 +48,6 @@ class Apartamento {
         return $this->propietario;
     }
 
-
     public function consultar() {
     $conexion = new Conexion();
     $aptoDAO = new ApartamentoDAO(
@@ -65,7 +63,6 @@ class Apartamento {
     $aptos = array();
 
     while (($datos = $conexion->registro()) != null) {
-        // Crear el objeto propietario con los datos de la consulta
         $propietario = new Propietario(
             $datos[5],  // id propietario
             $datos[6],  // nombre
@@ -74,14 +71,12 @@ class Apartamento {
             "",         // clave 
             $datos[9]   // teléfono
         );
-
         // Crear el apartamento y asignar el propietario
         $apto = new Apartamento($datos[0], $datos[1], $datos[2], $datos[3], $datos[4]);
         $apto->setPropietario($propietario);
 
         array_push($aptos, $apto);
     }
-
     $conexion->cerrar();
     return $aptos;
     }

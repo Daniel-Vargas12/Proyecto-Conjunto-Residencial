@@ -11,6 +11,5 @@ $admin -> consultar();
 
 
 <?php include("presentacion/barraNavegacion.php"); ?>
-<!-- Módulo de propietarios -->
 <?php include("presentacion/propietarios/listarPropietarios.php"); ?>
 
